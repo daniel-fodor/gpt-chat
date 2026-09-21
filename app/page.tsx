@@ -1,7 +1,9 @@
 "use client"
+import { Suspense } from "react"
 import Chat from "@/components/Chat"
 import { Separator } from "@/components/ui/separator"
 import { useSession } from "next-auth/react"
+import PreviousChats from "@/components/PreviousChats"
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -16,6 +18,10 @@ export default function Home() {
       )}
       {session?.user?.email && (
         <>
+        {/* out-of-order streaming */}
+          <Suspense fallback={<div>Loading Previous Chats</div>}>
+            <PreviousChats />
+          </Suspense>
           <Separator className="my-5" />
           <Chat />
         </>

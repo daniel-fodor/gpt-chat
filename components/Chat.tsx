@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getCompletion } from "@/actions/getCompletion"
+import Transcript from "./Transcript"
 
 interface Message {
   role: "user" | "assistant"
@@ -14,9 +15,10 @@ interface Message {
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([])
   const [message, setMessage] = useState("")
+  const chatId = useRef<number | null>(null)
 
   const onClick = async () => {
-    const response = await getCompletion([
+    const response = await getCompletion(chatId.current, [
       ...messages,
       {
         role: "user",
@@ -29,18 +31,7 @@ export default function Chat() {
 
   return (
     <div className="flex flex-col">
-      {messages.map((message, index) => (
-        <div
-          key={index}
-          className={`mb-5 flex flex-col ${message.role === "user" ? "justify-end" : "justify-start"}`}
-        >
-          <div
-            className={`${message.role === "user" ? "bg-blue-500" : "bg-gray-500 text-black"} rounded-md py-2 px-8`}
-          >
-            {message.content}
-          </div>
-        </div>
-      ))}
+      <Transcript messages={messages} truncate={false} />
       <div className="flex border-t-2 border-t-gray-500 pt-3 mt-3">
         <Input
           placeholder="Question"

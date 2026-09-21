@@ -7,3 +7,5 @@ export async function getChat() {}
 export async function getChats() {}
 
 export async function getMessages(chatId: number) {}
+
+export async function getChatsWithMessages(email: string) {}
