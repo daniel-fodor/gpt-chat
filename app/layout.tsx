@@ -20,7 +20,13 @@ export const metadata: Metadata = {
   description: "Generate by create nex app",
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+  chats,
+}: {
+  children: React.ReactNode
+  chats: React.ReactNode
+}) {
   return (
     <SessionProvider>
       <html
@@ -39,7 +45,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <UserButton />
             </div>
           </header>
-          <div className="flex flex-col md:flex-row">{children}</div>
+          <div className="flex flex-col md:flex-row">
+            <div className="flex-1">
+              {chats}
+              {children}
+            </div>
+          </div>
         </body>
       </html>
     </SessionProvider>
